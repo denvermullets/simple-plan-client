@@ -1,8 +1,8 @@
 export const globalStyles = {
   colors: {
-    colorThemeName: {
-      50: "#C8102E",
-      100: "#ffffff",
+    simpleBorder: {
+      50: "#F1F1F3",
+      100: "#C8C8C8",
     },
   },
   styles: {

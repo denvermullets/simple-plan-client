@@ -4,8 +4,8 @@ import { momentText } from "./components/text";
 
 const customTheme = extendTheme({
   fonts: {
-    heading: `Montserrat, ${base.fonts?.heading}`,
-    body: `Inter, ${base.fonts?.body}`,
+    heading: `Montserrat, ${base.fonts.heading}`,
+    body: `Inter, ${base.fonts.body}`,
   },
   components: {
     Text: { ...momentText },

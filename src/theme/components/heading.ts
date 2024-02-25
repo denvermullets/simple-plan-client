@@ -21,5 +21,13 @@ export const simpleHeading: StyleConfig = {
       fontSize: "16px",
       fontWeight: "semi-bold",
     }),
+    h5: () => ({
+      fontSize: "14px",
+      fontWeight: "bold",
+    }),
+    h6: () => ({
+      fontSize: "14px",
+      fontWeight: "normal",
+    }),
   },
 };

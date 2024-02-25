@@ -7,6 +7,8 @@ type SessionSlotProps = {
 };
 
 const SessionSlot: React.FC<SessionSlotProps> = ({ coachName, sessionTime }) => {
+  const localTime = dayjs(sessionTime).format("MMMM D, YYYY h:mm a");
+
   return (
     <Box borderWidth="1px" borderRadius="lg" width="26rem" borderColor="simpleBorder.50">
       <HStack padding="2rem">
@@ -14,7 +16,7 @@ const SessionSlot: React.FC<SessionSlotProps> = ({ coachName, sessionTime }) => 
         <VStack align="left" marginLeft=".5rem">
           <Heading variant="h2">{coachName}</Heading>
           <Heading variant="h4" marginTop="-.5rem">
-            {dayjs(sessionTime).format("MMMM D, YYYY h:mm a")}
+            {localTime}
           </Heading>
         </VStack>
       </HStack>

@@ -4,9 +4,10 @@ import dayjs from "dayjs";
 
 type CoachSessionsProps = {
   sessions: CoachStudentBookings[];
+  coach?: boolean;
 };
 
-const CoachSessions: React.FC<CoachSessionsProps> = ({ sessions }) => {
+const CoachSessions: React.FC<CoachSessionsProps> = ({ sessions, coach = true }) => {
   return (
     <Box maxH="18.75rem" overflowY="auto">
       {sessions.map((booking) => (
@@ -20,7 +21,9 @@ const CoachSessions: React.FC<CoachSessionsProps> = ({ sessions }) => {
           borderColor="#F1F1F3"
         >
           <Heading variant="h3" as="h3">
-            {`${booking.student?.first_name} ${booking.student?.last_name}`}
+            {coach
+              ? `${booking.student?.first_name} ${booking.student?.last_name}`
+              : `${booking.coach?.first_name} ${booking.coach?.last_name}`}
           </Heading>
 
           <Heading variant="h4" as="h4">

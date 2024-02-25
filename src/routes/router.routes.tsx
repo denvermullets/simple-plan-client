@@ -4,6 +4,8 @@ import Layout from "../components/Layout";
 import CoachView from "../components/CoachView";
 import { loadCoachInfo } from "../loaders/coachView";
 import CoachingSlot from "../components/CoachingSlot";
+import StudentView from "../components/StudentView";
+import { loadStudentInfo } from "../loaders/studentView";
 
 export const router = createBrowserRouter([
   {
@@ -13,6 +15,8 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/students/:studentId",
+        element: <StudentView />,
+        loader: loadStudentInfo,
       },
       {
         path: "/coaches/:coachId",

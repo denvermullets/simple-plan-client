@@ -36,7 +36,7 @@ const Header: React.FC = () => {
         >
           {users.map((user) => (
             <option value={`${user.slug}/${user.id}`} key={user.slug + user.id}>
-              {`${user.first_name} ${user.last_name}`}
+              {`${user.first_name} ${user.last_name} ${user.slug === "coaches" ? "(c)" : "(s)"}`}
             </option>
           ))}
         </Select>

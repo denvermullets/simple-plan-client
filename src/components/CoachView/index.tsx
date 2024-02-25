@@ -1,6 +1,6 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { CoachModel } from "../../models/coach.model";
-import { Box, Button, Divider, Flex, HStack, Heading, Spacer } from "@chakra-ui/react";
+import { Box, Button, Divider, Flex, HStack, Heading, Spacer, VStack } from "@chakra-ui/react";
 import CoachSessions from "../CoachSessions";
 import SessionSlot from "../SessionSlot";
 import { useContext, useEffect } from "react";
@@ -24,6 +24,8 @@ const CoachView: React.FC = () => {
     (booking) => booking.completed === true
   );
   const availableTimeSlots = coachInfo.coach_student_bookings.filter((booking) => !booking.student);
+
+  if (!currentUser) return;
 
   return (
     <Flex height="100vh">
@@ -53,15 +55,17 @@ const CoachView: React.FC = () => {
             Available Sessions
           </Heading>
           <Spacer />
-          <Button>Add new</Button>
+          <Button onClick={() => navigate(`/coaches/${currentUser.id}/new`)}>Add new</Button>
         </HStack>
-        {availableTimeSlots.map((slot) => (
-          <SessionSlot
-            key={`available-${slot.id}`}
-            sessionTime={slot.start_at}
-            coachName={`${currentUser?.first_name} ${currentUser?.last_name}`}
-          />
-        ))}
+        <VStack gap="1rem">
+          {availableTimeSlots.map((slot) => (
+            <SessionSlot
+              key={`available-${slot.id}`}
+              sessionTime={slot.start_at}
+              coachName={`${currentUser.first_name} ${currentUser.last_name}`}
+            />
+          ))}
+        </VStack>
       </Box>
     </Flex>
   );

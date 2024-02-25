@@ -1,14 +1,14 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { CoachModel } from "../../models/coach.model";
-import { Box, Button, Divider, Flex, HStack, Heading, Spacer, VStack } from "@chakra-ui/react";
+import { Box, Divider, Flex, Heading, VStack } from "@chakra-ui/react";
 import CoachSessions from "../CoachSessions";
 import SessionSlot from "../SessionSlot";
 import { useContext, useEffect } from "react";
 import { UserContext, UserContextType } from "../../providers/UserProvider";
+import { CoachStudentBookingsWithStudent } from "../../models/coachStudentBookings.model";
 
-const CoachView: React.FC = () => {
+const StudentView: React.FC = () => {
   const { currentUser } = useContext<UserContextType>(UserContext);
-  const coachInfo = useLoaderData() as CoachModel;
+  const { studentInfo, availableSessions } = useLoaderData() as CoachStudentBookingsWithStudent;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,13 +17,13 @@ const CoachView: React.FC = () => {
     }
   }, [navigate, currentUser]);
 
-  const upcomingSessions = coachInfo.coach_student_bookings.filter(
-    (booking) => booking.completed === false && booking.student
+  const upcomingSessions = studentInfo.coach_student_bookings.filter(
+    (booking) => booking.completed === false && booking.student_id
   );
-  const completedSessions = coachInfo.coach_student_bookings.filter(
+
+  const completedSessions = studentInfo.coach_student_bookings.filter(
     (booking) => booking.completed === true
   );
-  const availableTimeSlots = coachInfo.coach_student_bookings.filter((booking) => !booking.student);
 
   if (!currentUser) return;
 
@@ -33,7 +33,7 @@ const CoachView: React.FC = () => {
         <Heading variant="h2" as="h2" marginBottom="1rem">
           Upcoming Sessions
         </Heading>
-        <CoachSessions sessions={upcomingSessions} />
+        <CoachSessions sessions={upcomingSessions} coach={false} />
         <Heading
           variant="h2"
           as="h2"
@@ -44,25 +44,21 @@ const CoachView: React.FC = () => {
         >
           Recent Sessions
         </Heading>
-        <CoachSessions sessions={completedSessions} />
+        <CoachSessions sessions={completedSessions} coach={false} />
       </Box>
       <Box w="auto" paddingX="2rem">
         <Divider orientation="vertical" />
       </Box>
       <Box w="auto">
-        <HStack marginBottom="1rem">
-          <Heading variant="h2" as="h2" marginBottom="1rem">
-            Available Sessions
-          </Heading>
-          <Spacer />
-          <Button onClick={() => navigate(`/coaches/${currentUser.id}/new`)}>Add new</Button>
-        </HStack>
+        <Heading variant="h2" as="h2" marginBottom="1rem">
+          Available Sessions
+        </Heading>
         <VStack gap="1rem">
-          {availableTimeSlots.map((slot) => (
+          {availableSessions.map((slot) => (
             <SessionSlot
               key={`available-${slot.id}`}
               sessionTime={slot.start_at}
-              coachName={`${currentUser.first_name} ${currentUser.last_name}`}
+              coachName={`${slot.coach?.first_name} ${slot.coach?.last_name}`}
               sessionId={slot.id}
             />
           ))}
@@ -72,4 +68,4 @@ const CoachView: React.FC = () => {
   );
 };
 
-export default CoachView;
+export default StudentView;

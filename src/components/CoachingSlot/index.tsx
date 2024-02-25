@@ -50,7 +50,7 @@ const CoachingSlot: React.FC = () => {
     const convertedTime = dayjs(startAt).utc().format();
     const utcDate = dayjs(sessionDate).utc().format("YYYY-MM-DD");
 
-    const response = await axios.post(`${config.API_URL}/api/v1/coach_student_bookings`, {
+    const response = await axios.post(`${config.API_URL}/api/v1/coach-student-bookings`, {
       coach_id: currentUser.id,
       date: utcDate,
       start_at: convertedTime,
@@ -85,6 +85,7 @@ const CoachingSlot: React.FC = () => {
             width="auto"
             onChange={(e) => setSelectedTime(e.target.value)}
             value={selectedTime}
+            placeholder={selectedTime ? undefined : "Select time"}
           >
             {availableTimes.map((time, index) => (
               <option value={dayjs(time).format("hh:mm a")} key={index}>

@@ -1,13 +1,37 @@
 import { Avatar, Box, Button, HStack, Heading, VStack } from "@chakra-ui/react";
+import axios from "axios";
 import dayjs from "dayjs";
+import config from "../../config";
+import { useContext } from "react";
+import { UserContext, UserContextType } from "../../providers/UserProvider";
+import { useNavigate } from "react-router";
 
 type SessionSlotProps = {
   coachName: string;
   sessionTime: string;
+  sessionId: number;
 };
 
-const SessionSlot: React.FC<SessionSlotProps> = ({ coachName, sessionTime }) => {
+const SessionSlot: React.FC<SessionSlotProps> = ({ coachName, sessionTime, sessionId }) => {
+  const { currentUser } = useContext<UserContextType>(UserContext);
   const localTime = dayjs(sessionTime).format("MMMM D, YYYY h:mm a");
+  const navigate = useNavigate();
+
+  const reserveSession = async () => {
+    if (!currentUser) return;
+
+    const response = await axios.patch(
+      `${config.API_URL}/api/v1/coach-student-bookings/${sessionId}`,
+      {
+        coach_student_booking: { student_id: currentUser.id },
+      }
+    );
+
+    if (response.status === 200) {
+      // force the state to reload w/react router
+      navigate(`/students/${currentUser.id}`);
+    }
+  };
 
   return (
     <Box borderWidth="1px" borderRadius="lg" width="26rem" borderColor="simpleBorder.50">
@@ -27,7 +51,11 @@ const SessionSlot: React.FC<SessionSlotProps> = ({ coachName, sessionTime }) => 
         display="flex"
         justifyContent="flex-end"
       >
-        <Button background="none">Delete</Button>
+        {currentUser?.slug === "students" && (
+          <Button background="none" onClick={reserveSession}>
+            Reserve Session
+          </Button>
+        )}
       </Box>
     </Box>
   );
